@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINERAL KOVALEVA | Molecular Architecture & Quantum Stability</title>
+    <style>
+        /* 1. ГЛОБАЛЬНЫЙ ТЕХ-ЛЮКС СТИЛЬ */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            background-color: #030307;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        /* 2. АТМОСФЕРА: ДЫШАЩИЙ ОБСИДИАН */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; }
+        .cosmic-vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 20%, rgba(10, 5, 22, 0.6) 70%, #030307 100%);
+            z-index: -1; pointer-events: none;
+        }
+        .scanlines {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%);
+            background-size: 100% 4px; z-index: 9999; pointer-events: none; opacity: 0.4;
+        }
+
+        /* 3. НАВИГАЦИЯ */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(3, 3, 7, 0.85); backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03); z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1400px; margin: 0 auto; padding: 25px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { font-size: 16px; font-weight: 600; letter-spacing: 6px; text-transform: uppercase; color: #fff; }
+        .logo span { color: #d4af37; font-weight: 200; }
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 10px;
+            text-transform: uppercase; letter-spacing: 3px; margin-left: 35px; transition: 0.4s;
+        }
+        .nav-links a:hover { color: #d4af37; }
+
+        /* 4. СЕКЦИИ */
+        section { padding: 140px 20px 80px 20px; max-width: 1200px; margin: 0 auto; position: relative; }
+        .section-title {
+            font-size: 32px; font-weight: 100; letter-spacing: 8px;
+            text-transform: uppercase; text-align: center; margin-bottom: 80px; color: #fff;
+        }
+        .section-title span { color: #d4af37; }
+
+        /* 5. HERO ЭКРАН */
+        .hero-container { display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; min-height: 85vh; gap: 60px; }
+        @media (max-width: 900px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; }
+            .canvas-visual-wrapper { height: 400px; order: -1; }
+        }
+        .hero-text h1 { font-size: 48px; font-weight: 100; letter-spacing: -1px; line-height: 1.1; margin-bottom: 30px; color: #fff; }
+        .hero-text .subtitle { font-size: 11px; color: #d4af37; letter-spacing: 5px; text-transform: uppercase; margin-bottom: 25px; }
+        .hero-text p { color: rgba(255, 255, 255, 0.5); font-size: 16px; margin-bottom: 45px; font-weight: 300; }
+
+        .canvas-visual-wrapper {
+            position: relative; width: 100%; height: 560px;
+            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 4px;
+        }
+        #dna-canvas { width: 100%; height: 100%; cursor: grab; }
+
+        /* 6. MATRIX 3-6-9 */
+        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 40px; }
+        @media (max-width: 850px) { .matrix-grid { grid-template-columns: 1fr; } }
+        .tier-card {
+            background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 50px 30px; text-align: center; transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
+        }
+        .tier-card:hover, .tier-card.active { border-color: #d4af37; background: rgba(212, 175, 55, 0.05); transform: translateY(-10px); }
+        .tier-card h3 { font-size: 20px; font-weight: 300; letter-spacing: 3px; margin-bottom: 20px; color: #fff; }
+        .tier-price { font-size: 28px; color: #d4af37; margin-bottom: 20px; font-weight: 400; }
+        .tier-card p { font-size: 13px; color: rgba(255, 255, 255, 0.4); }
+
+        /* 7. PAYMENT & PROTOCOL */
+        .order-box {
+            max-width: 700px; margin: 60px auto; padding: 60px;
+            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(212, 175, 55, 0.2); border-radius: 2px;
+        }
+        .payment-methods { display: flex; gap: 15px; margin-bottom: 30px; justify-content: center; }
+        .pay-btn {
+            padding: 12px 24px; border: 1px solid rgba(255, 255, 255, 0.1); color: #888;
+            font-size: 11px; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+        }
+        .pay-btn.active { border-color: #d4af37; color: #d4af37; background: rgba(212, 175, 55, 0.05); }
+
+        .input-group { margin-bottom: 20px; }
+        input {
+            width: 100%; background: transparent; border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px; color: #fff; font-family: inherit; transition: 0.3s;
+        }
+        input:focus { border-color: #d4af37; outline: none; }
+
+        .btn-confirm {
+            width: 100%; padding: 20px; background: #d4af37; color: #000; border: none;
+            text-transform: uppercase; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: 0.4s;
+        }
+        .btn-confirm:hover { background: #fff; box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1); }
+
+        /* 8. FAQ */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 0; }
+        .faq-q { color: #d4af37; font-size: 16px; font-weight: 400; margin-bottom: 10px; cursor: pointer; }
+        .faq-a { color: rgba(255, 255, 255, 0.4); font-size: 14px; font-weight: 300; }
+
+        /* 9. HUD BAR */
+        .hud-bar {
+            position: fixed; bottom: 0; width: 100%; background: #030307;
+            border-top: 1px solid rgba(255, 255, 255, 0.02); padding: 12px 25px;
+            display: flex; justify-content: space-between; font-size: 10px;
+            color: rgba(255, 255, 255, 0.2); font-family: monospace; z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+    <div class="cosmic-vignette"></div>
+    <div class="scanlines"></div>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">MINERAL <span>KOVALEVA</span></div>
+            <nav class="nav-links">
+                <a href="#concept">Concept</a>
+                <a href="#matrix">Matrix</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <div class="subtitle">Molecular Architecture Initiative</div>
+                <h1>Biological Entropy<br>Management</h1>
+                <p>We engineer high-order spatial lattices to harmonize biological matrices. Experience the transition from cellular chaos to pure geometric resonance. Designed for peak cognitive performance and systemic stability.</p>
+                <button class="pay-btn active" style="padding: 20px 40px" onclick="document.getElementById('matrix').scrollIntoView()">Initialize Protocol</button>
+            </div>
+            <div class="canvas-visual-wrapper">
+                <canvas id="dna-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="matrix">
+        <h2 class="section-title">Resonance <span>Matrix 3-6-9</span></h2>
+        <div class="matrix-grid">
+            <div class="tier-card" onclick="selectTier(this, 'Basic', 377)">
+                <h3>[3] Basic</h3>
+                <div class="tier-price">€377</div>
+                <p>Initial molecular alignment and systemic recovery.</p>
+            </div>
+            <div class="tier-card" onclick="selectTier(this, 'Premium', 1597)">
+                <h3>[6] Premium</h3>
+                <div class="tier-price">€1,597</div>
+                <p>Advanced stability for high-stakes cognitive loads.</p>
+            </div>
+            <div class="tier-card" onclick="selectTier(this, 'Elite', 6765)">
+                <h3>[9] Elite</h3>
+                <div class="tier-price">€6,765</div>
+                <p>Maximum synchronization with high-order lattices.</p>
+            </div>
+        </div>
+
+        <div class="order-box">
+            <h3 style="text-align: center; margin-bottom: 30px; font-weight: 300; letter-spacing: 2px;">SECURE ALLOCATION FORM</h3>
+            
+            <div class="payment-methods">
+                <div class="pay-btn active" onclick="selectPay(this, 'USDT (TRC20)')">USDT (TRC20)</div>
+                <div class="pay-btn" onclick="selectPay(this, 'Bank Wire (EUR)')">Bank Wire</div>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="name" placeholder="FULL NAME / SYSTEM HOLDER">
+            </div>
+            <div class="input-group">
+                <input type="text" id="contact" placeholder="YOUR TELEGRAM / EMAIL">
+            </div>
+            <div class="input-group">
+                <input type="text" id="address" placeholder="SHIPPING COORDINATES (City, Country)">
+            </div>
+            <div class="input-group" style="border: 1px solid #d4af37; padding: 15px; color: #d4af37;">
+                <p style="font-size: 12px; margin-bottom: 5px;">USDT (TRC20) WALLET ADDRESS:</p>
+                <code style="word-break: break-all;">TKvQLrvGGdmeutgXsd4HSVjCc8V8dfa2Xe</code>
+            </div>
+            
+            <button class="btn-confirm" onclick="executeOrder()">Confirm Allocation Protocol</button>
+            <p id="order-status" style="text-align: center; margin-top: 20px; font-size: 11px; color: #d4af37; display: none;">
+                Rerouting to secure terminal...
+            </p>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-title">Security & <span>Intelligence</span></h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-q">Contact Details</div>
+                <div class="faq-a">Email: KovalevAlchemica@proton.me<br>Telegram: @planetary_alchemy</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How does the 3-6-9 frequency work?</div>
+                <div class="faq-a">Based on Nikola Tesla's numerical keys, our matrices use these ratios to bridge biological fluids with organized crystalline geometry.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Is international shipping available?</div>
+                <div class="faq-a">Yes. We use DHL Express with diplomatic-grade tracking for all Elite and Premium allocations worldwide.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hud-bar">
+        <div>LATTICE_STATUS: OPTIMAL // ENTR_LEVEL: 0.0012%</div>
+        <div>ROUTING_NODE: @planetary_alchemy</div>
+        <div id="hud-clock">00:00:00</div>
+    </div>
+
+    <script>
+        // 1. ДЫШАЩИЙ ФОН
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let w, h;
+        function resize() { w = bgCanvas.width = window.innerWidth; h = bgCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resize); resize();
+
+        const smoke = Array.from({length: 5}, () => ({
+            x: Math.random() * w, y: Math.random() * h, r: Math.random() * 400 + 200, a: Math.random() * 6
+        }));
+
+        function drawBg() {
+            bgCtx.fillStyle = '#030307'; bgCtx.fillRect(0,0,w,h);
+            smoke.forEach(s => {
+                s.a += 0.002;
+                let grad = bgCtx.createRadialGradient(s.x + Math.sin(s.a)*50, s.y, 0, s.x, s.y, s.r);
+                grad.addColorStop(0, `rgba(30, 15, 60, 0.05)`);
+                grad.addColorStop(1, 'transparent');
+                bgCtx.fillStyle = grad; bgCtx.beginPath(); bgCtx.arc(s.x, s.y, s.r, 0, 7); bgCtx.fill();
+            });
+            requestAnimationFrame(drawBg);
+        }
+        drawBg();
+
+        // 2. DNA ДВИЖОК (Silver & Gold Edition)
+        const dnaCanvas = document.getElementById('dna-canvas');
+        const dnaCtx = dnaCanvas.getContext('2d');
+        let dnaW, dnaH;
+        function resizeDna() { dnaW = dnaCanvas.width = dnaCanvas.offsetWidth; dnaH = dnaCanvas.height = dnaCanvas.offsetHeight; }
+        window.addEventListener('resize', resizeDna); resizeDna();
+
+        let angle = 0;
+        function drawDna() {
+            dnaCtx.clearRect(0, 0, dnaW, dnaH);
+            const cx = dnaW / 2; const nodes = 28;
+            for(let i=0; i<nodes; i++) {
+                let y = 60 + i * (dnaH - 120) / nodes;
+                let off = Math.sin(angle + i * 0.35) * (dnaW * 0.25);
+                let z = Math.cos(angle + i * 0.35);
+                
+                // Connection line
+                dnaCtx.strokeStyle = `rgba(255,255,255, ${0.05 * (z+1)})`;
+                dnaCtx.beginPath(); dnaCtx.moveTo(cx + off, y); dnaCtx.lineTo(cx - off, y); dnaCtx.stroke();
+
+                // Helix Nodes
+                dnaCtx.fillStyle = z > 0 ? "#fff" : "#333";
+                dnaCtx.beginPath(); dnaCtx.arc(cx + off, y, 3 * (z+1.5)/2, 0, 7); dnaCtx.fill();
+                
+                dnaCtx.fillStyle = z < 0 ? "#d4af37" : "#665522";
+                dnaCtx.beginPath(); dnaCtx.arc(cx - off, y, 3 * (-z+1.5)/2, 0, 7); dnaCtx.fill();
+            }
+            angle += 0.015;
+            requestAnimationFrame(drawDna);
+        }
+        drawDna();
+
+        // 3. ЛОГИКА ЗАКАЗА
+        let selectedTier = "";
+        let selectedMethod = "USDT (TRC20)";
+
+        function selectTier(el, name) {
+            document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            selectedTier = name;
+        }
+
+        function selectPay(el, method) {
+            document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            selectedMethod = method;
+        }
+
+        // Обновленная функция для работы через скрытый серверный бот
+        function executeOrder() {
+            if(!selectedTier) return alert("Please select a Matrix Level first.");
+            const name = document.getElementById('name').value.trim();
+            const contact = document.getElementById('contact').value.trim();
+            const address = document.getElementById('address').value.trim();
+
+            if(!name || !contact) return alert("Please fill in your contact information.");
+
+            document.getElementById('order-status').style.display = "block";
+            
+            const msg = `🧬 NEW ALLOCATION REQUEST\n\nLevel: ${selectedTier}\nMethod: ${selectedMethod}\nHolder: ${name}\nContact: ${contact}\nLocation: ${address}`;
+            
+            // Отправка данных на наш Python-сервер (server.py)
+            fetch('http://localhost:5000/api/order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    details: msg
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => {
+                console.error('Error sending to server:', error);
+            });
+        }
+
+        // HUD Clock
+        setInterval(() => {
+            const d = new Date();
+            document.getElementById('hud-clock').innerText = d.toTimeString().split(' ')[0];
+        }, 1000);
+    </script>
+</body>
+</html>
+
+import requests
+import smtplib
+from email.mime.text import MIMEText
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)  # Разрешаем запросы от нашего HTML-сайта
+
+# === КОНФИГУРАЦИЯ БОТА И ПОЧТЫ (Укажи свои данные) ===
+MY_TOKEN = "ТВОЙ_ТОКЕН_БОТА"
+MY_CHAT_ID = "ТВОЙ_ЧАТ_ID"
+
+EMAIL_SENDER = "your_system_email@mail.ru"     # С какой почты отправлять
+EMAIL_PASSWORD = "your_app_password"          # Пароль приложения из настроек почты
+EMAIL_RECEIVER = "your_admin_email@gmail.com"  # На какую почту дублировать при сбое
+
+# === ПОСЛЕДОВАТЕЛЬНОСТЬ ИЗ КАСКАДНЫХ БЛОКОВ ===
+
+# Блок 1: Основная функция Telegram-бота
+def send_to_telegram_bot(client_name, client_phone, order_details, tg_token, tg_chat_id):
+    tg_url = f"https://api.telegram.org/bot{tg_token}/sendMessage"
+    try:
+        response = requests.post(tg_url, json={"chat_id": tg_chat_id, "text": order_details})
+        if response.status_code == 200:
+            print("[УСПЕХ] Заявка успешно отправлена в Telegram-бот.")
+            return True
+        else:
+            print(f"[ОШИБКА БОТА] Код ответа от TG: {response.status_code}")
+            return False
+    except Exception as e:
+        print(f"[КРИТИЧЕСКАЯ ОШИБКА ТГ] Не удалось связаться с сервером Telegram: {e}")
+        return False
+
+# Блок 2: Резервная функция Email-страховки
+def send_backup_email(client_name, order_details):
+    message_text = f"⚠️ ВНИМАНИЕ: Сбой Telegram-бота! Заявка продублирована на почту.\n\n{order_details}"
+    msg = MIMEText(message_text, 'plain', 'utf-8')
+    msg['Subject'] = f"🚨 РЕЗЕРВ: Заявка от {client_name}"
+    msg['From'] = EMAIL_SENDER
+    msg['To'] = EMAIL_RECEIVER
+    
+    try:
+        with smtplib.SMTP_SSL('smtp.mail.ru', 465) as server:
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_SENDER, [EMAIL_RECEIVER], msg.as_string())
+        print("[РЕЗЕРВ СРАБОТАЛ] Письмо на Email успешно отправлено.")
+        return True
+    except Exception as e:
+        print(f"[ПОЛНЫЙ СБОЙ] Не удалось отправить даже резервное письмо: {e}")
+        return False
+
+# Блок 3: Обработчик запроса с сайта (Логика вызова)
+@app.route('/api/order', methods=['POST'])
+def handle_order():
+    data = request.json
+    name = data.get('name')
+    details = data.get('details')
+
+    # 1. Сначала пытаемся отправить через Бот (Блок 1)
+    success = send_to_telegram_bot(name, None, details, MY_TOKEN, MY_CHAT_ID)
+
+    # 2. Если функция вернула False -> включается страховка (Блок 2)
+    if not success:
+        send_backup_email(name, details)
+        return jsonify({"status": "backup_used", "message": "Telegram не ответил, отправлено на Email"}), 200
+
+    return jsonify({"status": "success", "message": "Успешно отправлено в Telegram"}), 200
