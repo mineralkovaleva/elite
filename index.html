@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MINERAL KOVALEVA | Molecular Architecture</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        
+        body {
+            background-color: #030307;
+            color: #f1f5f9;
+            font-family: 'Space Grotesk', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            letter-spacing: 0.5px;
+        }
+
+        /* КВАНТОВЫЕ ФОНЫ */
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -3; }
+        #dna-bg-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; }
+        
+        .cosmic-vignette {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 10%, rgba(3, 3, 7, 0.8) 60%, #030307 100%);
+            z-index: -1; pointer-events: none;
+        }
+
+        /* НАВИГАЦИЯ */
+        header {
+            position: fixed; top: 0; width: 100%;
+            background: rgba(3, 3, 7, 0.75); backdrop-filter: blur(25px);
+            border-bottom: 1px solid rgba(212, 175, 55, 0.03); z-index: 1000;
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 25px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo { 
+            font-family: 'Cinzel', serif; 
+            font-size: 19px; 
+            font-weight: 700; 
+            letter-spacing: 5px; 
+            text-transform: uppercase; 
+            color: #fff;
+        }
+        .logo span { color: #d4af37; font-weight: 400; }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.4); text-decoration: none; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 2px; margin-left: 35px; transition: 0.3s ease;
+        }
+        .nav-links a:hover { color: #d4af37; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .nav-container { justify-content: center; padding: 20px; }
+        }
+
+        /* АДАПТИВНАЯ ГЕОМЕТРИЯ СЕКЦИЙ */
+        section { padding: 140px 20px 80px 20px; max-width: 1200px; margin: 0 auto; position: relative; }
+        
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(24px, 4.5vw, 36px); font-weight: 500; letter-spacing: 5px;
+            text-transform: uppercase; text-align: center; margin-bottom: 60px; color: #fff;
+            line-height: 1.4;
+        }
+        .section-title span { color: #d4af37; text-shadow: 0 0 25px rgba(212,175,55,0.2); }
+        .section-title .number-row { display: block; font-size: clamp(26px, 5.5vw, 40px); margin-top: 12px; letter-spacing: 10px; }
+
+        /* HERO ЭКРАН (СПЛИТ-ДИЗАЙН) */
+        .hero-container { 
+            display: grid; 
+            grid-template-columns: 1.1fr 0.9fr; 
+            align-items: center; 
+            min-height: 70vh; 
+            gap: 40px; 
+        }
+        
+        .hero-text { text-align: left; }
+        
+        .hero-text h1 { 
+            font-family: 'Cinzel', serif;
+            font-size: clamp(28px, 4.8vw, 46px); 
+            font-weight: 400; 
+            letter-spacing: 2px; 
+            line-height: 1.3; 
+            margin-bottom: 25px; 
+            color: #fff; 
+            text-transform: uppercase;
+        }
+        .hero-text .subtitle { 
+            font-size: 11px; color: #d4af37; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; 
+            font-weight: 600; display: inline-block; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 6px;
+        }
+        .hero-text p { 
+            color: rgba(241, 245, 249, 0.6); 
+            font-size: 15px; 
+            margin-bottom: 40px; 
+            font-weight: 300; 
+            max-width: 540px; 
+            line-height: 1.7;
+        }
+
+        .canvas-visual-wrapper {
+            position: relative; width: 100%; height: 480px;
+            background: radial-gradient(circle at center, rgba(212,175,55,0.02) 0%, transparent 70%);
+            overflow: hidden;
+        }
+        #collider-canvas { width: 100%; height: 100%; }
+
+        @media (max-width: 1024px) {
+            .hero-container { grid-template-columns: 1fr; text-align: center; gap: 20px; }
+            .hero-text { text-align: center; display: flex; flex-direction: column; align-items: center; }
+            .hero-text p { text-align: center; margin: 0 auto 35px auto; }
+            .canvas-visual-wrapper { height: 380px; order: -1; }
+        }
+
+        /* SYSTEM ARCHITECTURE */
+        .info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        @media (max-width: 900px) { .info-grid { grid-template-columns: 1fr; gap: 35px; } }
+        .info-node { border-left: 2px solid rgba(212, 175, 55, 0.25); padding-left: 25px; }
+        .info-node h4 { font-family: 'Cinzel', serif; font-size: 15px; color: #fff; letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase;}
+        .info-node p { font-size: 14px; color: rgba(241, 245, 249, 0.5); font-weight: 300; line-height: 1.7; }
+
+        /* MATRIX СЕТКА */
+        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 20px; width: 100%; }
+        @media (max-width: 900px) { .matrix-grid { grid-template-columns: 1fr; gap: 20px; } }
+        
+        .tier-card {
+            background: rgba(255, 255, 255, 0.01); border: 1px solid rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px); padding: 50px 30px; text-align: center; 
+            transition: all 0.4s ease; cursor: pointer;
+        }
+        .tier-card:hover, .tier-card.active { 
+            border-color: #d4af37; background: rgba(212, 175, 55, 0.02); 
+            transform: translateY(-3px);
+        }
+        .tier-card h3 { font-family: 'Cinzel', serif; font-size: 20px; letter-spacing: 2px; margin-bottom: 15px; color: #fff; }
+        .tier-price { font-family: 'Cinzel', serif; font-size: 34px; color: #d4af37; margin-bottom: 15px; font-weight: 600; }
+        .tier-card p { font-size: 13px; color: rgba(241, 245, 249, 0.45); font-weight: 300; }
+
+        /* ФОРМА */
+        .order-box {
+            max-width: 750px; margin: 70px auto; padding: 50px 40px;
+            background: rgba(3, 3, 7, 0.8); border: 1px solid rgba(212, 175, 55, 0.1); 
+            backdrop-filter: blur(20px);
+        }
+        @media (max-width: 640px) { .order-box { padding: 30px 20px; } }
+        .payment-methods { display: flex; gap: 15px; margin-bottom: 30px; justify-content: center; }
+        
+        .pay-btn {
+            padding: 15px 30px; border: 1px solid rgba(255, 255, 255, 0.05); color: rgba(255,255,255,0.4);
+            font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; 
+            transition: all 0.3s ease; background: transparent;
+        }
+        .pay-btn.active { border-color: #d4af37; color: #d4af37; background: rgba(212, 175, 55, 0.03); }
+
+        .input-group { margin-bottom: 20px; }
+        input {
+            width: 100%; background: rgba(255,255,255,0.01); border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 18px; color: #fff; font-family: inherit; font-size: 14px; text-align: center;
+        }
+        input:focus { border-color: #d4af37; outline: none; }
+
+        .btn-confirm {
+            width: 100%; padding: 20px; background: #d4af37; color: #030307; border: none;
+            text-transform: uppercase; font-weight: 600; letter-spacing: 2px; cursor: pointer; transition: 0.3s ease; font-size: 12px;
+        }
+        .btn-confirm:hover { background: #fff; }
+
+        /* FAQ */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid rgba(212, 175, 55, 0.05); padding: 22px 0; }
+        .faq-q { color: #fff; font-size: 17px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .faq-q::after { content: '↓'; color: #d4af37; }
+        .faq-item.open .faq-q { color: #d4af37; }
+        .faq-a { color: rgba(241, 245, 249, 0.5); font-size: 14px; line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, margin-top 0.3s; }
+        .faq-item.open .faq-a { max-height: 150px; margin-top: 12px; }
+
+        /* HUD БАР */
+        .hud-bar {
+            position: fixed; bottom: 0; width: 100%; background: #030307; border-top: 1px solid rgba(212, 175, 55, 0.05); padding: 12px 40px;
+            display: flex; justify-content: space-between; font-size: 10px; color: rgba(255, 255, 255, 0.3); font-family: monospace; z-index: 1000;
+        }
+        @media (max-width: 768px) { .hud-bar { display: none; } }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+    <canvas id="dna-bg-canvas"></canvas>
+    <div class="cosmic-vignette"></div>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">MINERAL <span>KOVALEVA</span></div>
+            <nav class="nav-links">
+                <a href="#hero">Concept</a>
+                <a href="#architecture">Architecture</a>
+                <a href="#matrix">Matrix</a>
+                <a href="#faq">Intelligence</a>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="hero-container">
+            <div class="hero-text">
+                <div class="subtitle">Molecular Architecture Initiative</div>
+                <h1>Biological Entropy<br>Management</h1>
+                <p>We engineer high-order spatial lattices to harmonize biological matrices. Experience the transition from cellular chaos to pure geometric resonance. Designed for peak cognitive performance and systemic stability.</p>
+                <button class="pay-btn active" style="padding: 18px 35px" onclick="document.getElementById('matrix').scrollIntoView()">Initialize Protocol</button>
+            </div>
+            <div class="canvas-visual-wrapper">
+                <canvas id="collider-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture">
+        <h2 class="section-title">System <span>Architecture</span></h2>
+        <div class="info-grid">
+            <div class="info-node">
+                <h4>01 / Cluster Hydration</h4>
+                <p>Restructuring the body's liquid crystalline arrays. Purifying the information circuits of cellular fluids and optimizing their conversion into high-stability hexagonal structural formats.</p>
+            </div>
+            <div class="info-node">
+                <h4>02 / Quantum Coherence</h4>
+                <p>Synchronization of cellular nuclear wave emissions. Protecting the internal energy exchange geometry from disruptive electromagnetic smog and alignment field degradation.</p>
+            </div>
+            <div class="info-node">
+                <h4>03 / Tesla Ratios (3-6-9)</h4>
+                <p>Applying fundamental numerical universal codes to biological rhythms. Stabilizing neural peaks, accelerating systemic regeneration, and preventing architectural burnout.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="matrix">
+        <h2 class="section-title">Resonance Matrix <span class="number-row">3 - 6 - 9</span></h2>
+        <div class="matrix-grid">
+            <div class="tier-card" onclick="selectTier(this, 'Basic')">
+                <h3>[3] Basic</h3>
+                <div class="tier-price">€377</div>
+                <p>Initial molecular alignment and systemic recovery.</p>
+            </div>
+            <div class="tier-card" onclick="selectTier(this, 'Premium')">
+                <h3>[6] Premium</h3>
+                <div class="tier-price">€1,597</div>
+                <p>Advanced stability for high-stakes cognitive loads.</p>
+            </div>
+            <div class="tier-card" onclick="selectTier(this, 'Elite')">
+                <h3>[9] Elite</h3>
+                <div class="tier-price">€6,765</div>
+                <p>Maximum synchronization with high-order lattices.</p>
+            </div>
+        </div>
+
+        <div class="order-box">
+            <h3 style="font-family: 'Cinzel', serif; text-align: center; margin-bottom: 35px; font-weight: 400; letter-spacing: 3px; color: #fff;">SECURE ALLOCATION FORM</h3>
+            
+            <div class="payment-methods">
+                <button class="pay-btn active" onclick="selectPay(this, 'USDT (TRC20)')">USDT (TRC20)</button>
+                <button class="pay-btn" onclick="selectPay(this, 'Bank Wire (EUR)')">Bank Wire</button>
+            </div>
+
+            <div class="input-group">
+                <input type="text" id="name" placeholder="FULL NAME / SYSTEM HOLDER">
+            </div>
+            <div class="input-group">
+                <input type="text" id="contact" placeholder="YOUR TELEGRAM / EMAIL">
+            </div>
+            <div class="input-group">
+                <input type="text" id="address" placeholder="SHIPPING COORDINATES (City, Country)">
+            </div>
+            <div class="input-group" style="border: 1px solid rgba(212, 175, 55, 0.2); padding: 20px; color: #d4af37; background: rgba(212,175,55,0.01);">
+                <p style="font-size: 11px; margin-bottom: 6px; letter-spacing: 1px; text-transform: uppercase; color: rgba(212,175,55,0.6);">USDT (TRC20) WALLET:</p>
+                <code style="word-break: break-all; font-family: monospace; font-size: 13px; color: #fff;">TKvQLrvGGdmeutgXsd4HSVjCc8V8dfa2Xe</code>
+            </div>
+            
+            <button class="btn-confirm" style="margin-top: 25px;" onclick="executeOrder()">Confirm Allocation Protocol</button>
+            <p id="order-status" style="text-align: center; margin-top: 20px; font-size: 12px; color: #d4af37; display: none; font-family: monospace;">Rerouting...</p>
+        </div>
+    </section>
+
+    <section id="faq">
+        <h2 class="section-title">Security & <span>Intelligence</span></h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-q">Contact Details</div>
+                <div class="faq-a">Email: KovalevAlchemica@proton.me<br>Telegram: @planetary_alchemy</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">How does the 3-6-9 frequency work?</div>
+                <div class="faq-a">Based on Nikola Tesla's numerical keys, our matrices use these ratios to bridge biological fluids with organized crystalline geometry.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Is international shipping available?</div>
+                <div class="faq-a">Yes. We use DHL Express with premium tracking for all allocations worldwide.</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="hud-bar">
+        <div>LATTICE_STATUS: <span style="color: #00ffcc;">OPTIMAL</span></div>
+        <div>ROUTING_NODE: @planetary_alchemy</div>
+        <div id="hud-clock">00:00:00</div>
+    </div>
+
+    <script>
+        const TG_BOT_TOKEN = "8827394019:AAF7At3TSCy4ZZQ5fTy70M1_p-rvom6Vjas";
+        const TG_CHAT_ID = "5644841397";
+
+        // 1. КОСМИЧЕСКИЙ ЗВЕЗДНЫЙ ФОН
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        let w, h; let particles = [];
+        function resizeBg() { w = bgCanvas.width = window.innerWidth; h = bgCanvas.height = window.innerHeight; initParticles(); }
+        class Particle {
+            constructor() {
+                this.x = Math.random() * w; this.y = Math.random() * h;
+                this.vx = (Math.random() - 0.5) * 0.1; this.vy = (Math.random() - 0.5) * 0.1;
+                this.radius = Math.random() * 1 + 0.8;
+            }
+            update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > w) this.vx *= -1; if (this.y < 0 || this.y > h) this.vy *= -1; }
+            draw() { bgCtx.fillStyle = 'rgba(212, 175, 55, 0.08)'; bgCtx.beginPath(); bgCtx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); bgCtx.fill(); }
+        }
+        function initParticles() { particles = []; for (let i = 0; i < 25; i++) particles.push(new Particle()); }
+        window.addEventListener('resize', resizeBg); resizeBg();
+        function drawBgLines() { bgCtx.fillStyle = '#030307'; bgCtx.fillRect(0, 0, w, h); particles.forEach(p => { p.update(); p.draw(); }); requestAnimationFrame(drawBgLines); }
+        drawBgLines();
+
+
+        // 2. ДНК ФОН (СТРОГО НИЖЕ ХЕРО-БЛОКА)
+        const dnaBgCanvas = document.getElementById('dna-bg-canvas');
+        const dnaBgCtx = dnaBgCanvas.getContext('2d');
+        let dW, dH;
+        function resizeDnaBg() { dW = dnaBgCanvas.width = window.innerWidth; dH = dnaBgCanvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeDnaBg); resizeDnaBg();
+
+        let dnaRotation = 0;
+        function drawBackgroundDna() {
+            dnaBgCtx.clearRect(0, 0, dW, dH);
+            
+            // Защитный хак: Полное отключение отрисовки ДНК на первом экране
+            let currentScroll = window.scrollY;
+            if (currentScroll < 550) {
+                dnaRotation += 0.003;
+                requestAnimationFrame(drawBackgroundDna);
+                return;
+            }
+
+            let centerX = dW > 1024 ? dW * 0.85 : dW * 0.5;
+            let nodes = Math.floor(dH / 26);
+            
+            for (let i = 0; i < nodes; i++) {
+                let y = (i * dH / nodes) + 15;
+                let currentAngle = dnaRotation + (i * 0.18);
+                let widthOffset = dW > 768 ? 120 : 65;
+                
+                let x1 = centerX + Math.sin(currentAngle) * widthOffset;
+                let x2 = centerX - Math.sin(currentAngle) * widthOffset;
+                let z = Math.cos(currentAngle);
+                let alpha = (z + 1) / 2 * 0.35 + 0.1;
+
+                dnaBgCtx.strokeStyle = `rgba(212, 175, 55, ${alpha * 0.15})`;
+                dnaBgCtx.lineWidth = 1;
+                dnaBgCtx.beginPath(); dnaBgCtx.moveTo(x1, y); dnaBgCtx.lineTo(x2, y); dnaBgCtx.stroke();
+
+                dnaBgCtx.fillStyle = `rgba(212, 175, 55, ${alpha * 0.6})`;
+                dnaBgCtx.beginPath(); dnaBgCtx.arc(x1, y, 3, 0, Math.PI * 2); dnaBgCtx.fill();
+
+                dnaBgCtx.fillStyle = `rgba(241, 245, 249, ${alpha * 0.4})`;
+                dnaBgCtx.beginPath(); dnaBgCtx.arc(x2, y, 2.5, 0, Math.PI * 2); dnaBgCtx.fill();
+            }
+            dnaRotation += 0.003;
+            requestAnimationFrame(drawBackgroundDna);
+        }
+        drawBackgroundDna();
+
+
+        // 3. ЧИСТЫЙ ВРАЩАЮЩИЙСЯ ИКОСАЭДР (БЕЗ КРУГОВ)
+        const colliderCanvas = document.getElementById('collider-canvas');
+        const colCtx = colliderCanvas.getContext('2d');
+        let cW, cH;
+        function resizeCollider() { cW = colliderCanvas.width = colliderCanvas.offsetWidth; cH = colliderCanvas.height = colliderCanvas.offsetHeight; }
+        window.addEventListener('resize', resizeCollider); resizeCollider();
+
+        let rotX = 0, rotY = 0;
+        let mouseX = 0, mouseY = 0;
+
+        colliderCanvas.addEventListener('mousemove', (e) => {
+            const rect = colliderCanvas.getBoundingClientRect();
+            mouseX = ((e.clientX - rect.left) / cW - 0.5) * 0.8;
+            mouseY = ((e.clientY - rect.top) / cH - 0.5) * -0.8;
+        });
+
+        // Классическая геометрия Икосаэдра
+        const t = (1.0 + Math.sqrt(5.0)) / 2.0;
+        const icosaVertices = [
+            {x: -1, y:  t, z:  0}, {x:  1, y:  t, z:  0}, {x: -1, y: -t, z:  0}, {x:  1, y: -t, z:  0},
+            {x:  0, y: -1, z:  t}, {x:  0, y:  1, z:  t}, {x:  0, y: -1, z: -t}, {x:  0, y:  1, z: -t},
+            {x:  t, y:  0, z: -1}, {x:  t, y:  0, z:  1}, {x: -t, y:  0, z: -1}, {x: -t, y:  0, z:  1}
+        ];
+
+        const icosaFaces = [
+            [0, 11, 5], [0, 5, 1], [0, 1, 7], [0, 7, 10], [0, 10, 11],
+            [1, 5, 9], [5, 11, 4], [11, 10, 2], [10, 7, 6], [7, 1, 8],
+            [3, 9, 4], [3, 4, 2], [3, 2, 6], [3, 6, 8], [3, 8, 9],
+            [4, 9, 5], [2, 4, 11], [6, 2, 10], [8, 6, 7], [9, 8, 1]
+        ];
+
+        function project3D(v, size) {
+            let currX = rotX + mouseY;
+            let currY = rotY + mouseX;
+
+            let y1 = v.y * Math.cos(currX) - v.z * Math.sin(currX);
+            let z1 = v.y * Math.sin(currX) + v.z * Math.cos(currX);
+            let x2 = v.x * Math.cos(currY) + z1 * Math.sin(currY);
+            let z2 = -v.x * Math.sin(currY) + z1 * Math.cos(currY);
+
+            return { 
+                x: cW / 2 + x2 * size, 
+                y: cH / 2 + y1 * size, 
+                z: z2 
+            };
+        }
+
+        function drawCollider() {
+            colCtx.clearRect(0, 0, cW, cH);
+            
+            rotX += 0.003;
+            rotY += 0.005;
+
+            let scale = dW > 768 ? 125 : 100;
+            let projected = icosaVertices.map(v => project3D(v, scale));
+
+            icosaFaces.forEach(face => {
+                colCtx.beginPath();
+                colCtx.moveTo(projected[face[0]].x, projected[face[0]].y);
+                colCtx.lineTo(projected[face[1]].x, projected[face[1]].y);
+                colCtx.lineTo(projected[face[2]].x, projected[face[2]].y);
+                colCtx.closePath();
+                
+                colCtx.fillStyle = 'rgba(212, 175, 55, 0.015)';
+                colCtx.fill();
+                
+                colCtx.strokeStyle = 'rgba(212, 175, 55, 0.35)';
+                colCtx.lineWidth = 1;
+                colCtx.stroke();
+            });
+
+            projected.forEach(p => {
+                colCtx.fillStyle = '#fff';
+                colCtx.shadowBlur = 8; colCtx.shadowColor = '#fff';
+                colCtx.beginPath(); colCtx.arc(p.x, p.y, 2.5, 0, Math.PI * 2); colCtx.fill();
+                colCtx.shadowBlur = 0;
+            });
+
+            colCtx.fillStyle = '#fff';
+            colCtx.beginPath(); colCtx.arc(cW / 2, cH / 2, 3, 0, Math.PI * 2); colCtx.fill();
+
+            requestAnimationFrame(drawCollider);
+        }
+        drawCollider();
+
+        let selectedTier = ""; let selectedMethod = "USDT (TRC20)";
+        function selectTier(el, name) { document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('active')); el.classList.add('active'); selectedTier = name; }
+        function selectPay(el, method) { document.querySelectorAll('.pay-btn').forEach(b => b.classList.remove('active')); el.classList.add('active'); selectedMethod = method; }
+
+        function executeOrder() {
+            if(!selectedTier) return alert("Please select a Matrix Level first.");
+            const name = document.getElementById('name').value;
+            const contact = document.getElementById('contact').value;
+            const address = document.getElementById('address').value;
+            if(!name || !contact) return alert("Please fill in your contact information.");
+
+            const statusText = document.getElementById('order-status');
+            statusText.style.display = "block"; statusText.innerText = "⚡ SECURING QUANTUM TUNNEL...";
+            
+            const msg = `💎 NEW MOLECULAR ALLOCATION\n\n[Matrix Level]: ${selectedTier}\n[Node]: ${selectedMethod}\n[System Holder]: ${name}\n[Contact]: ${contact}\n[Coordinates]: ${address}`;
+            fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+                method: "POST", headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: TG_CHAT_ID, text: msg })
+            })
+            .then(response => {
+                if (response.ok) { statusText.innerText = "✔ ALLOCATION PROTOCOL LAUNCHED SUCCESSFULLY."; }
+                else { statusText.innerText = "✖ ROUTING REJECTION. TRY AGAIN."; }
+            })
+            .catch(() => { statusText.innerText = "✖ LINK INTERRUPTION."; });
+        }
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.querySelector('.faq-q').addEventListener('click', () => {
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if(!isOpen) item.classList.add('open');
+            });
+        });
+
+        setInterval(() => { document.getElementById('hud-clock').innerText = new Date().toTimeString().split(' ')[0]; }, 1000);
+    </script>
+</body>
+</html>
